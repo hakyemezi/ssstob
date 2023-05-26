@@ -8,3 +8,4 @@ joblib
 plotly
 IPython
 openpyxl
+xgboost
