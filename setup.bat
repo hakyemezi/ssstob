@@ -3,6 +3,7 @@
 pip install -r requirements.txt
 
 curl -O https://github.com/hakyemezi/ssstob/main/ilkislem.xlsx
+curl -O https://github.com/hakyemezi/ssstob/main/hisse20.xlsx
 curl -O https://github.com/hakyemezi/ssstob/main/AKBNK.pkl
 curl -O https://github.com/hakyemezi/ssstob/main/ASELS.pkl
 curl -O https://github.com/hakyemezi/ssstob/main/BIMAS.pkl
