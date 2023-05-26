@@ -180,6 +180,7 @@ if menu_selection == menu1:
     st.text("4. Calculated Indicators")
     st.session_state['main_data'] = main_data
     st.session_state['tickers'] = tickers
+    print(tickers)
     for ticker in tickers:
         st.session_state[f"m_{ticker}"] = joblib.load(f"models/{ticker}.pkl")
     st.text("5. Models Have Setup for Each Stock")
