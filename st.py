@@ -20,12 +20,12 @@ st.set_page_config(layout="wide")
 ################################################
 @st.cache_data
 def process_stock_data(n_years=5):
-    df1 = pd.read_excel("ilkislem.xlsx", header=None, skiprows=[0])
+    df1 = pd.read_excel("data/ilkislem.xlsx", header=None, skiprows=[0])
     today = pd.Timestamp.today()
     n_years_ago = today - pd.DateOffset(years=n_years)
     df1 = df1[pd.to_datetime(df1.iloc[:, 4], errors="coerce", dayfirst=True) < n_years_ago]
     code_list = df1.iloc[:, 1].apply(lambda x: str(x).split(".")[0]).tolist()
-    df2 = pd.read_excel('hisse20.xlsx')
+    df2 = pd.read_excel('data/hisse20.xlsx')
     result = [x.split('.E')[0] for x in df2.iloc[:, 0].astype(str) if '.E' in x]
     code_list = list(set(code_list) & set(result))
     return code_list
@@ -181,7 +181,7 @@ if menu_selection == menu1:
     st.session_state['main_data'] = main_data
     st.session_state['tickers'] = tickers
     for ticker in tickers:
-        st.session_state[f"m_{ticker}"] = joblib.load(f"{ticker}.pkl")
+        st.session_state[f"m_{ticker}"] = joblib.load(f"models/{ticker}.pkl")
     st.text("5. Models Have Setup for Each Stock")
     test_data = get_all_prices_for_test(interval="1d")
     st.text("6. Downloaded Daily Prices for Test")
