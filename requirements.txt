@@ -10,3 +10,4 @@ xgboost
 joblib
 streamlit
 plotly
+IPython
