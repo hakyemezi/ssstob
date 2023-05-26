@@ -1,18 +1,15 @@
 import streamlit as st
-import importlib
 import pandas as pd
 import numpy as np
 import yfinance as yf
 import datetime as dt
-from datetime import timedelta
-from datetime import date
 import time
 from IPython.display import clear_output
 from ta import add_all_ta_features
 import warnings
 import joblib
 import plotly.express as px
-from PIL import Image
+
 
 
 warnings.filterwarnings("ignore")
