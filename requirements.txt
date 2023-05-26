@@ -4,7 +4,7 @@ numpy
 yfinance
 datetime
 ta
-joblib
+joblib==1.2.0
 plotly
 IPython
 openpyxl
