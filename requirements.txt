@@ -8,6 +8,5 @@ matplotlib
 scikit-learn
 xgboost
 joblib
-warnings
 streamlit
 plotly
