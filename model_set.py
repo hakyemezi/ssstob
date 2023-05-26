@@ -4,29 +4,16 @@ import yfinance as yf
 import datetime as dt
 import time
 from IPython.display import clear_output
-import ta as ta
 from ta import add_all_ta_features
-from scipy.stats import mstats
 import seaborn as sns
 from matplotlib import pyplot as plt
 import warnings
 import joblib
 warnings.filterwarnings("ignore")
 from sklearn.model_selection import GridSearchCV, cross_validate, TimeSeriesSplit
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.linear_model import LogisticRegression
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.svm import SVC
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, VotingClassifier, AdaBoostClassifier
 from xgboost import XGBClassifier
-from lightgbm import LGBMClassifier
-from catboost import CatBoostClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
 from sklearn.preprocessing import MinMaxScaler
-
-import lightgbm as lgb
-
 
 def process_stock_data(n_years=5):
     df1 = pd.read_excel("ilkislem.xlsx", header=None, skiprows=[0])
