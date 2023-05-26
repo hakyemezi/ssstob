@@ -3,15 +3,11 @@ numpy
 yfinance
 datetime
 ta
-scipy
 seaborn
 matplotlib
 scikit-learn
 xgboost
-lightgbm
-catboost
-importlib
-warnings
 joblib
+warnings
+streamlit
 plotly
-Pillow
