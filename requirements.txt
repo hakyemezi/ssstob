@@ -12,3 +12,4 @@ joblib
 streamlit
 plotly
 IPython
+openpyxl
