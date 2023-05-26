@@ -1,4 +1,4 @@
-streamli
+streamlit
 pandas
 numpy
 yfinance
