@@ -6,3 +6,4 @@ datetime
 ta
 joblib
 plotly
+IPython
