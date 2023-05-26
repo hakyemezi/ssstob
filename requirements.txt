@@ -9,4 +9,4 @@ plotly
 IPython
 openpyxl
 xgboost==1.7.5
-sklearn
+scikit-learn
