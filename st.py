@@ -182,7 +182,8 @@ if menu_selection == menu1:
     st.session_state['tickers'] = tickers
     print(tickers)
     for ticker in tickers:
-        st.session_state[f"m_{ticker}"] = joblib.load(f"models/{ticker}.pkl")
+        a = f"models/{ticker}.pkl"
+        st.session_state[f"m_{ticker}"] = joblib.load(a)
     st.text("5. Models Have Setup for Each Stock")
     test_data = get_all_prices_for_test(interval="1d")
     st.text("6. Downloaded Daily Prices for Test")
