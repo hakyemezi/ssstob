@@ -48,6 +48,7 @@ def get_stock_prices(tickers):
     unique_symbols = all_data['Symbol'].unique()
     print(f"Successfully retrieved {len(unique_symbols)} different stock data.")
     print(f"Failed to retrieve prices {len(no_data)} stocks")
+    print(dt.date.today())
     return all_data, no_data
 
 @st.cache_data
