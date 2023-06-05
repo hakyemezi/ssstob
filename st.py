@@ -107,7 +107,9 @@ def calculate_returns(dataframe, symbol_col='Symbol', close_col='Close', open_co
     dataframe['Actual_Direction_Next_7_Days'] = np.where(dataframe['Actual_Return_Next_7_Days'] > 0, 1, 0)
     last_row = dataframe.iloc[-1]
     dataframe = dataframe.dropna().copy()
-    dataframe.loc[dataframe.index.max() + 1] = last_row
+    last_index = dataframe.index.max()
+    new_index = last_index + pd.DateOffset(days=1)
+    dataframe.loc[new_index] = last_row
     return dataframe
 
 @st.cache_data
