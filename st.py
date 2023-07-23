@@ -136,7 +136,8 @@ def calculate_technical_indicators_for_test(dataframe, long_window=20, short_win
     for stock_code in symbol_list:
         data = dataframe.groupby('Symbol').get_group(stock_code)
         data = add_all_ta_features(data, open="Open", high="High", low="Low", close="Close", volume="Volume",
-                                   fillna=True)
+                                   fillna=False)
+        data.fillna(0, inplace=True)
         print(f"Calculated technical indicators for {stock_code} ...")
         stock_data = pd.concat([stock_data, data])
         clear_output(wait=True)
