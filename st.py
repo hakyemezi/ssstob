@@ -96,6 +96,7 @@ def get_all_prices_for_test(interval="1d"):
     minutes = int(elapsed_time // 60)
     seconds = int(elapsed_time % 60)
     print("Data retrieval ended...")
+    print(all_data)
     print("Elapsed time of the code: {} minutes {} seconds".format(minutes, seconds))
     return all_data
 
