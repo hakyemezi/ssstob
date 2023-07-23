@@ -207,6 +207,7 @@ elif menu_selection == menu2:
     else:
         results = pd.DataFrame(columns=["Stock", "Prediction", "Daily Return", "SMA", "EMA", "MACD", "RSI"])
         # selected_date = pd.Timestamp.today() - timedelta(days=pd.Timestamp.today().weekday())
+        print(test_data)
         selected_date = st.session_state["test_data"].index.max()
         selected_date = selected_date.replace(hour=0, minute=0, second=0, microsecond=0)
         st.title(f"Pedictions as of {selected_date.strftime('%d.%m.%Y')}")
