@@ -39,10 +39,10 @@ Allows you to select a date to review historical prediction results.
 ### Stock Analysis: 
 Provides stock price chart analysis for a specific stock.
 
-### Notes and Disclaimers
+## Notes and Disclaimers
 This application is not investment advice. It is for general informational purposes only.
 Accuracy and completeness of the data cannot be guaranteed.
 Always seek expert advice before making any investment decisions.
 
-### Contribution
+## Contribution
 If you wish to contribute to this project, please fork the repository and submit your improvements as pull requests. Any contributions and feedback are highly appreciated.
