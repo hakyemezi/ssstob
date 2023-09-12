@@ -10,8 +10,6 @@ import warnings
 import joblib
 import plotly.express as px
 
-
-
 warnings.filterwarnings("ignore")
 st.set_page_config(layout="wide")
 
@@ -100,9 +98,12 @@ def get_all_prices_for_test(interval="1d"):
     print("Elapsed time of the code: {} minutes {} seconds".format(minutes, seconds))
     return all_data
 
-def calculate_returns(dataframe, symbol_col='Symbol', close_col='Close', open_col='Open'):
+def calculate_returns(dataframe, symbol_col='Symbol', close_col='Close', open_col='Open', close_shift=True):
     dataframe['Actual_Return_Last_7_Day'] = dataframe.groupby(symbol_col)[close_col].pct_change()
-    dataframe['Close_Shifted'] = dataframe.groupby(symbol_col)[close_col].transform(lambda x: x.shift(-1))
+    if close_shift:
+        dataframe['Close_Shifted'] = dataframe.groupby(symbol_col)[close_col].transform(lambda x: x.shift(-1))
+    else:
+        dataframe['Close_Shifted'] = dataframe.groupby(symbol_col)[close_col].transform(lambda x: x.shift(0))
     dataframe['Actual_Return_Next_7_Days'] = (
                 (dataframe['Close_Shifted'] - dataframe[open_col]) / dataframe[open_col] * 100)
     dataframe['Actual_Direction_Next_7_Days'] = np.where(dataframe['Actual_Return_Next_7_Days'] > 0, 1, 0)
@@ -194,7 +195,7 @@ if menu_selection == menu1:
     st.text("5. Models Have Setup for Each Stock")
     test_data = get_all_prices_for_test(interval="1d")
     st.text("6. Downloaded Daily Prices for Test")
-    test_data = calculate_returns(test_data)
+    test_data = calculate_returns(test_data, close_shift=False)
     st.text("7. Calculated Returns for Test")
     test_data = calculate_technical_indicators_for_test(test_data)
     st.text("8. Calculated Indicators for Test")
@@ -232,6 +233,19 @@ elif menu_selection == menu2:
         results = results.sort_values("Prediction", ascending=False).reset_index(drop=True)
         results.index = results.index + 1
         st.dataframe(results.head(7))
+        comments = {
+            'Prediction Range': ['0.65 or higher', 'Below 0.5', 'Between 0.5 and 0.65'],
+            'Recommendation': ['Positive Direction', 'Negative Direction', 'Neutral'],
+            'Description': [
+                "The model indicates a positive outlook signal with a prediction of 0.65 or higher, suggesting a high probability of positive performance in the near future.",
+                "The model's prediction falls below 0.5, indicating a negative outlook for the short-term performance of the asset. Caution may be warranted.",
+                "The model provides a neutral outlook for the asset with a prediction between 0.5 and 0.65. Monitoring market conditions is advisable."
+            ]
+        }
+        explanation = pd.DataFrame(comments)
+        st.title('Model Prediction Explanations')
+        st.markdown(explanation.style.hide(axis="index").to_html(), unsafe_allow_html=True)
+        st.title('Disclosure')
         st.text_area("Disclosure", "The information provided is not investment advice. It is general in nature and may not be suitable for your specific financial situation and preferences. Therefore, making investment decisions solely based on this information may not meet your expectations. The information is for general informational purposes only and does not constitute a buy-sell recommendation or return promise for any investment instrument. It is important to note that this content may not provide sufficient information to support trading decisions. The content owner is not liable for the outcomes of future investments or commercial transactions based on the information and opinions provided. The accuracy and completeness of the prices, data, and information cannot be guaranteed, and the content is subject to change without notice. The data is sourced from believed reliable sources, and any errors resulting from their use are not the responsibility of the content producer.",
                      200)
 
@@ -240,7 +254,7 @@ elif menu_selection == menu3:
     if 'main_data' not in st.session_state:
         st.warning("Please run SSStoB first!")
     else:
-        results = pd.DataFrame(columns=["Stock", "Prediction","Actual", "Actual Return", "Daily Return", "SMA", "EMA", "MACD", "RSI"])
+        results = pd.DataFrame(columns=["Stock", "Prediction","Actual", "Actual Return", "Past Period Return", "SMA", "EMA", "MACD", "RSI"])
         selected_date = st.selectbox("Select a date (Beginning of the weeks)", st.session_state["main_data"].index.unique().sort_values(ascending=False))
         st.title(f"Historical Pedictions as of {selected_date.strftime('%d.%m.%Y')}")
         for ticker in st.session_state['tickers']:
@@ -254,7 +268,7 @@ elif menu_selection == menu3:
                       "Prediction": x[0][1],
                       "Actual": ham_data.loc[selected_date, "Actual_Direction_Next_7_Days"],
                       "Actual Return": ham_data.loc[selected_date, "Actual_Return_Next_7_Days"],
-                      "Daily Return": ham_data.loc[selected_date, "Actual_Return_Last_7_Day"] * 100,
+                      "Past Period Return": ham_data.loc[selected_date, "Actual_Return_Last_7_Day"] * 100,
                       "SMA": ham_data.loc[selected_date, "trend_sma_slow"],
                       "EMA": ham_data.loc[selected_date, "trend_ema_slow"],
                       "MACD": ham_data.loc[selected_date, "trend_macd"],
