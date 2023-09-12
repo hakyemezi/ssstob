@@ -201,6 +201,7 @@ if menu_selection == menu1:
     st.text("8. Calculated Indicators for Test")
     st.session_state['test_data'] = test_data
     st.success("Successfully Completed!")
+    st.warning("Please use the menu options on the left side of the screen to view the predictions.")
 
 elif menu_selection == menu2:
     st.sidebar.title(menu2)
