@@ -180,6 +180,7 @@ menu_selection = st.sidebar.radio('', menu_options)
 if menu_selection == menu1:
     st.sidebar.title(menu1)
     st.text("1. Started SSStoB")
+    st.cache_data.clear()
     main_data, tickers = get_all_prices()
     st.text("2. Downloaded Prices")
     main_data = calculate_returns(main_data)
