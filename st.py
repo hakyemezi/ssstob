@@ -147,9 +147,9 @@ def calculate_technical_indicators_for_test(dataframe, long_window=20, short_win
 ################################################
 # Functions
 ################################################
-menu1 = "Run SSStoB"
-menu2 = "See Current Predictions"
-menu3 = "See Past Predictions"
+menu1 = "See Current Predictions"
+menu2 = "See Past Predictions"
+menu3 = "Run SSStoB"
 menu4 = "Stock Analysis"
 features = ['others_dr',
             'volatility_dch',
@@ -179,33 +179,6 @@ menu_selection = st.sidebar.radio('', menu_options)
 # Submenu
 if menu_selection == menu1:
     st.sidebar.title(menu1)
-    st.text("1. Started SSStoB")
-    st.cache_data.clear()
-    main_data, tickers = get_all_prices()
-    st.text("2. Downloaded Prices")
-    main_data = calculate_returns(main_data)
-    st.text("3. Calculated Returns")
-    main_data = calculate_technical_indicators(main_data)
-    st.text("4. Calculated Indicators")
-    st.session_state['main_data'] = main_data
-    st.session_state['tickers'] = tickers
-    print(tickers)
-    for ticker in tickers:
-        a = f"models/{ticker}.pkl"
-        st.session_state[f"m_{ticker}"] = joblib.load(a)
-    st.text("5. Models Have Setup for Each Stock")
-    test_data = get_all_prices_for_test(interval="1d")
-    st.text("6. Downloaded Daily Prices for Test")
-    test_data = calculate_returns(test_data, close_shift=False)
-    st.text("7. Calculated Returns for Test")
-    test_data = calculate_technical_indicators_for_test(test_data)
-    st.text("8. Calculated Indicators for Test")
-    st.session_state['test_data'] = test_data
-    st.success("Successfully Completed!")
-    st.warning("Please use the menu options on the left side of the screen to view the predictions.")
-
-elif menu_selection == menu2:
-    st.sidebar.title(menu2)
     if 'main_data' not in st.session_state:
         st.warning("Please run SSStoB first!")
     else:
@@ -251,8 +224,8 @@ elif menu_selection == menu2:
         st.text_area("Disclosure", "The information provided is not investment advice. It is general in nature and may not be suitable for your specific financial situation and preferences. Therefore, making investment decisions solely based on this information may not meet your expectations. The information is for general informational purposes only and does not constitute a buy-sell recommendation or return promise for any investment instrument. It is important to note that this content may not provide sufficient information to support trading decisions. The content owner is not liable for the outcomes of future investments or commercial transactions based on the information and opinions provided. The accuracy and completeness of the prices, data, and information cannot be guaranteed, and the content is subject to change without notice. The data is sourced from believed reliable sources, and any errors resulting from their use are not the responsibility of the content producer.",
                      200)
 
-elif menu_selection == menu3:
-    st.sidebar.title(menu3)
+elif menu_selection == menu2:
+    st.sidebar.title(menu2)
     if 'main_data' not in st.session_state:
         st.warning("Please run SSStoB first!")
     else:
@@ -283,6 +256,33 @@ elif menu_selection == menu3:
         st.dataframe(results.head(7))
         st.text_area("Disclosure", "The information provided is not investment advice. It is general in nature and may not be suitable for your specific financial situation and preferences. Therefore, making investment decisions solely based on this information may not meet your expectations. The information is for general informational purposes only and does not constitute a buy-sell recommendation or return promise for any investment instrument. It is important to note that this content may not provide sufficient information to support trading decisions. The content owner is not liable for the outcomes of future investments or commercial transactions based on the information and opinions provided. The accuracy and completeness of the prices, data, and information cannot be guaranteed, and the content is subject to change without notice. The data is sourced from believed reliable sources, and any errors resulting from their use are not the responsibility of the content producer.",
                      400)
+
+elif menu_selection == menu3:
+    st.sidebar.title(menu3)
+    st.text("1. Started SSStoB")
+    st.cache_data.clear()
+    main_data, tickers = get_all_prices()
+    st.text("2. Downloaded Prices")
+    main_data = calculate_returns(main_data)
+    st.text("3. Calculated Returns")
+    main_data = calculate_technical_indicators(main_data)
+    st.text("4. Calculated Indicators")
+    st.session_state['main_data'] = main_data
+    st.session_state['tickers'] = tickers
+    print(tickers)
+    for ticker in tickers:
+        a = f"models/{ticker}.pkl"
+        st.session_state[f"m_{ticker}"] = joblib.load(a)
+    st.text("5. Models Have Setup for Each Stock")
+    test_data = get_all_prices_for_test(interval="1d")
+    st.text("6. Downloaded Daily Prices for Test")
+    test_data = calculate_returns(test_data, close_shift=False)
+    st.text("7. Calculated Returns for Test")
+    test_data = calculate_technical_indicators_for_test(test_data)
+    st.text("8. Calculated Indicators for Test")
+    st.session_state['test_data'] = test_data
+    st.success("Successfully Completed!")
+    st.warning("Please use the menu options on the left side of the screen to view the predictions.")
 
 elif menu_selection == menu4:
     st.sidebar.title(menu4)
