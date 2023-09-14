@@ -174,7 +174,7 @@ features = ['others_dr',
             'volatility_kch']
 
 # Main menu
-menu_options = [menu1, menu2, menu3, menu4]
+menu_options = [menu1, menu2, menu3, menu4, menu5]
 menu_selection = st.sidebar.radio('', menu_options)
 
 # Submenu
