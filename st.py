@@ -174,12 +174,10 @@ features = ['others_dr',
             'volatility_kch']
 
 # Main menu
-menu_options = [menu1, menu2, menu3, menu4, menu5]
-menu_selection = st.sidebar.radio('', menu_options)
+tab1, tab2, tab3, tab4, tab5 = st.tabs([menu1, menu2, menu3, menu4, menu5])
 
 # Submenu
-if menu_selection == menu1:
-    st.sidebar.title(menu1)
+with tab1:
     st.text("1. Started SSStoB")
     main_data, tickers = get_all_prices()
     st.text("2. Downloaded Prices")
@@ -204,8 +202,7 @@ if menu_selection == menu1:
     st.success("Successfully Completed!")
     st.warning("Please use the menu options on the left side of the screen to view the predictions.")
 
-elif menu_selection == menu2:
-    st.sidebar.title(menu2)
+with tab2:
     if 'main_data' not in st.session_state:
         st.warning("Please run SSStoB first!")
     else:
@@ -252,8 +249,7 @@ elif menu_selection == menu2:
                      200)
 
 
-elif menu_selection == menu3:
-    st.sidebar.title(menu3)
+with tab3:
     if 'main_data' not in st.session_state:
         st.warning("Please run SSStoB first!")
     else:
@@ -285,20 +281,18 @@ elif menu_selection == menu3:
         st.text_area("Disclosure", "The information provided is not investment advice. It is general in nature and may not be suitable for your specific financial situation and preferences. Therefore, making investment decisions solely based on this information may not meet your expectations. The information is for general informational purposes only and does not constitute a buy-sell recommendation or return promise for any investment instrument. It is important to note that this content may not provide sufficient information to support trading decisions. The content owner is not liable for the outcomes of future investments or commercial transactions based on the information and opinions provided. The accuracy and completeness of the prices, data, and information cannot be guaranteed, and the content is subject to change without notice. The data is sourced from believed reliable sources, and any errors resulting from their use are not the responsibility of the content producer.",
                      400)
 
-elif menu_selection == menu4:
-    st.sidebar.title(menu4)
+with tab4:
     if 'main_data' not in st.session_state:
         st.warning("Please run SSStoB first!")
     else:
         submenu_options = st.session_state['tickers']
-        submenu_selection = st.sidebar.radio('Select an option', submenu_options)
+        submenu_selection = st.selectbox('Select an option', submenu_options)
         test = st.session_state["test_data"].groupby('Symbol').get_group(submenu_selection)
         fig = px.line(test["Close"], title=submenu_selection)
         fig.update_layout(width=1500, height=600)
         st.plotly_chart(fig, use_container_width=True)
 
-elif menu_selection == menu5:
-    st.sidebar.title(menu5)
+with tab5:
     st.text("1. Started SSStoB")
     st.cache_data.clear()
     main_data, tickers = get_all_prices()
