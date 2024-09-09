@@ -211,7 +211,7 @@ with tab2:
         print(st.session_state["test_data"])
         selected_date = st.session_state["test_data"].index.max()
         selected_date = selected_date.replace(hour=0, minute=0, second=0, microsecond=0)
-        st.title(f"Pedictions as of {selected_date.strftime('%d.%m.%Y')}")
+        st.title(f"Predictions as of {selected_date.strftime('%d.%m.%Y')}")
         for ticker in st.session_state['tickers']:
             test = st.session_state['test_data'].groupby('Symbol').get_group(ticker)
             ham_data = test
