@@ -59,6 +59,7 @@ def get_stock_prices_for_test(tickers):
         try:
             test_data = yf.download(i + '.IS', start=dt.datetime(2023, 1, 1), end=dt.date.today() + dt.timedelta(days=1))
             test_data['Symbol'] = i
+            test_data.columns = [col[0] for col in test_data.columns]
             all_data = pd.concat([all_data, test_data])
             clear_output(wait=True)
         except:
