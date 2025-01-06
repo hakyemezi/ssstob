@@ -8,5 +8,5 @@ joblib==1.2.0
 plotly
 IPython
 openpyxl
-xgboost==1.7.5
+xgboost
 scikit-learn
