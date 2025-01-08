@@ -262,7 +262,6 @@ with tab3:
         for ticker in st.session_state['tickers']:
             test = st.session_state["main_data"].groupby('Symbol').get_group(ticker)
             ham_data = test
-            test = test[features]
             model = st.session_state[f"m_{ticker}"]
             features_m = model.get_booster().feature_names
             test = test[features_m]
