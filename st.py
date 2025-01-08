@@ -217,8 +217,9 @@ with tab2:
         for ticker in st.session_state['tickers']:
             test = st.session_state['test_data'].groupby('Symbol').get_group(ticker)
             ham_data = test
-            test = test[features]
             model = st.session_state[f"m_{ticker}"]
+            features_m = model.get_booster().feature_names
+            test = test[features_m]
             test = test[test.index == selected_date]
             x = model.predict_proba(test)
             result = {"Stock": ticker,
@@ -263,6 +264,8 @@ with tab3:
             ham_data = test
             test = test[features]
             model = st.session_state[f"m_{ticker}"]
+            features_m = model.get_booster().feature_names
+            test = test[features_m]
             test = test[test.index == selected_date]
             x = model.predict_proba(test)
             result = {"Stock": ticker,
