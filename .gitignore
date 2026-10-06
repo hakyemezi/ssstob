@@ -1,0 +1,8 @@
+
+__pycache__/
+.pytest_cache/
+*.py[cod]
+.venv/
+*.egg-info/
+trained_models/
+rerun_models/
