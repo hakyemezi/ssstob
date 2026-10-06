@@ -1,48 +1,55 @@
-# SSStoB: Smart Stock Selector To Buy
-SSStoB is a Streamlit application that utilizes a machine learning model to predict the direction of stock prices and visualizes the prediction results. This application allows you to view prediction results on a specific date and explore historical prediction outcomes.
+# SSStoB: weekly stock research
 
-**Access the Live Application:** [SSStoB Live Application](https://ssstob.streamlit.app/)
+A Streamlit research application for completed weekly stock prices and a reproducible baseline for next-week direction. Training and inference use the same weekly Close/Volume pipeline. The current unfinished week is excluded.
 
-## How It Works
-The SSStoB application consists of the following key steps:
+## Run
 
-### Data Preparation: 
-Initially, several data processing functions are employed to prepare the stock market data. The data is limited to specific years, and eligible stocks are identified.
+Python 3.11+:
 
-### Fetching Stock Prices: 
-The price data for the identified stocks is retrieved using the Yahoo Finance API. The downloaded data is then processed and made ready for use.
+```sh
+python -m pip install -r requirements.txt
+streamlit run st.py
+```
 
-### Calculation of Technical Indicators: 
-Technical analysis indicators are computed and added to the data frame. These indicators aid in making predictions.
+Click **Load weekly data** to start. Navigating tabs does not download data or clear the cache. Download failures are shown per stock; successfully loaded stocks remain available. Prices are cached for one hour, with an explicit refresh option.
 
-### Preparation of Machine Learning Models: 
-A machine learning model is prepared for each stock, and these models are used to predict the price direction of the respective stock.
+## Legacy models and migration
 
-### Displaying Predictions: 
-The application presents users with current prediction results based on the selected date. These results are sorted by the predicted price direction and displayed to the user.
+The existing `models/*.pkl` files are preserved for provenance, but their training dates, feature conventions and input frequency were not recorded in this repository. They are not loaded by the updated prediction interface. The old daily-input/weekly-history mixture has been removed.
 
-### Exploring Historical Prediction Results: 
-Users can examine historical prediction outcomes made on specific dates. This is useful for evaluating past model performance.
+The new model is an explicit **logistic-regression baseline**, not a reconstruction or validated replacement of the legacy models. Its features are weekly returns, trailing volatility, distance from a trailing average and volume change. It does not use the old technical-indicator feature set.
 
-### Graphical Analysis: 
-Users can visualize the price chart of a selected stock. This chart visually displays the price movements of the stock.
+Train models before displaying predictions:
 
-## Usage
-Once the application starts, you can select your desired option from the menu on the left side:
+```sh
+python train.py AKBNK ASELS
+```
 
-### Run SSStoB: 
-Prepares machine learning models and processes data for predictions.
-### See Current Predictions: 
-Displays prediction results as of the current date.
-### See Past Predictions: 
-Allows you to select a date to review historical prediction results.
-### Stock Analysis: 
-Provides stock price chart analysis for a specific stock.
+This writes a model, metadata and the downloaded weekly price snapshot to `trained_models/`. These generated files are ignored by Git. To reproduce training from a saved snapshot:
 
-## Notes and Disclaimers
-This application is not investment advice. It is for general informational purposes only.
-Accuracy and completeness of the data cannot be guaranteed.
-Always seek expert advice before making any investment decisions.
+```sh
+python train.py AKBNK --prices-csv trained_models/AKBNK_weekly_prices.csv --output rerun_models
+```
 
-## Contribution
-If you wish to contribute to this project, please fork the repository and submit your improvements as pull requests. Any contributions and feedback are highly appreciated.
+Use the same dependency versions recorded in the metadata for reproducibility. The model checksum ties metadata to a specific artifact; only load model files you trust.
+
+## Evaluation contract
+
+- Target: next completed weekly close divided by the current weekly close, minus one; positive returns form class 1.
+- Chronological 80/20 split; training rows whose outcome reaches the holdout boundary are purged.
+- The scaler and classifier are fitted on training data only. The evaluated model is saved without refitting on holdout data.
+- Metadata records training/holdout dates, row counts, accuracy, balanced accuracy, Brier score and a training-majority baseline.
+- The UI displays predictions only after the last training outcome. A missing or incompatible metadata file disables that stock's predictions while leaving price charts available.
+- Historical results are a fixed holdout replay, **not** a walk-forward backtest. Probabilities are not separately calibrated. Provider-adjusted prices can be revised.
+- The spreadsheet universe is a present-day selection; survivorship/selection bias, trading costs and execution timing are not modelled. Holdout metrics do not establish profitable trading performance.
+
+No live models were trained as part of the reliability changes. Synthetic tests verify the pipeline, separation of training/holdout, and artifact round-trip; they do not measure market performance.
+
+## Tests
+
+```sh
+python -m pip install pytest
+python -m pytest -q tests
+```
+
+A GitHub Actions example is provided at `docs/ci-tests.example.yml`. It is not active: enabling it requires copying it to `.github/workflows/tests.yml` with credentials that can manage workflows. Local tests use the commands above.
